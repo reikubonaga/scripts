@@ -83,7 +83,7 @@ class Sangokushi
 
   def self.build_min_level_facility(names = [:wood, :stone, :iron, :food])
     buildings = Sangokushi.buildings
-    hash = buildings.select{|h| h[:level] }.select{|h| [:wood].map{|n| Sangokushi::RESOURCE_NAME_MAP[n]}.include?(h[:name])}.sort_by{|h| h[:level] }.first
+    hash = buildings.select{|h| h[:level] }.select{|h| names.map{|n| Sangokushi::RESOURCE_NAME_MAP[n]}.include?(h[:name])}.sort_by{|h| h[:level] }.first
     self.level_up_facility(url: hash[:href])
   end
 
@@ -100,13 +100,18 @@ class Sangokushi
     end
   end
 
-  def self.auto_build_facilities
+  def self.auto_actions
     driver.get "http://w12.3gokushi.jp/village.php"
     if can_build
       self.build_min_level_facility([:wood, :stone, :iron])
     end
+
+    if Time.now.min == 0
+      self.fight_all_duels
+    end
+
     sleep(60)
-    self.auto_build_facilities
+    self.auto_actions
   end
 
   def self.fight_all_duels
@@ -126,11 +131,11 @@ end
 
 Sangokushi.login
 
-sleep(3)
+#sleep(3)
 
-Sangokushi.switch_village(n = 1)
+Sangokushi.switch_village(4)
 
-sleep(3)
+#sleep(3)
 
-Sangokushi.auto_build_facilities
+Sangokushi.auto_actions
 
