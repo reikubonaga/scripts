@@ -98,13 +98,26 @@ class Sangokushi
   end
 
   def self.auto_actions
-    driver.get "http://w12.3gokushi.jp/village.php"
-    if can_build
-      self.build_min_level_facility([:wood, :stone, :iron])
+
+    [1, 3, 4].each do |i|  
+      begin
+        self.switch_village(i)
+        driver.get "http://w12.3gokushi.jp/village.php"
+        sleep(3)
+        if can_build
+          self.build_min_level_facility([:wood, :stone, :iron])
+        end
+      rescue => ex
+        puts ex.message
+      end
     end
 
     if Time.now.min == 0
-      self.fight_all_duels
+      begin
+        self.fight_all_duels
+      rescue => ex
+        puts ex.message
+      end
     end
 
     sleep(60)
@@ -113,10 +126,13 @@ class Sangokushi
 
   def self.fight_all_duels
     driver.get "http://w12.3gokushi.jp/pvp_duel/duel.php"
+    sleep(3)
     driver.find_element(:id, 'duel_deck').find_elements(:xpath, "a[1]").first.click
+    sleep(3)
     battles = driver.find_elements(:class, 'btn_battle')
     if battles.size > 0
       battles.first.click
+      sleep(3)
       name = driver.find_element(:id, 'TB_iframeContent').attribute("name")
       driver.switch_to.frame(name)
       driver.find_element(:id, 'battle_start_button').click
@@ -126,13 +142,10 @@ class Sangokushi
   end
 end
 
+puts "start"
 Sangokushi.login
 
-#sleep(3)
-
-Sangokushi.switch_village(4)
-
-#sleep(3)
+sleep(3)
 
 Sangokushi.auto_actions
 
