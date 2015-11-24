@@ -87,12 +87,9 @@ class Sangokushi
     self.level_up_facility(url: hash[:href])
   end
 
-  def self.level_up_facility(url: url, x: x, y: y)
-    if url
-      driver.get url
-    else
-      driver.get "http://w12.3gokushi.jp/facility/facility.php?x=#{x}&y=#{y}"
-    end
+  def self.level_up_facility(url: url)
+    driver.get url
+    # driver.get "http://w12.3gokushi.jp/facility/facility.php?x=#{x}&y=#{y}"
     sleep(2)
     images = driver.find_element(:class, 'lvupFacility').find_elements(:xpath, "p/a/img[1]")
     if images.size > 0
