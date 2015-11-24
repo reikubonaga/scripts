@@ -83,7 +83,7 @@ class Sangokushi
 
   def self.build_min_level_facility(names = [:wood, :stone, :iron, :food])
     buildings = Sangokushi.buildings
-    hash = buildings.select{|h| h[:level] }.select{|h| names.map{|n| Sangokushi::RESOURCE_NAME_MAP[n]}.include?(h[:name])}.sort_by{|h| h[:level] }.first
+    hash = buildings.select{|h| h[:level] }.select{|h| names.map{|n| Sangokushi::RESOURCE_NAME_MAP[n]}.include?(h[:name])}.shuffle.sort_by{|h| h[:level] }.first
     self.level_up_facility(url: hash[:href])
   end
 
