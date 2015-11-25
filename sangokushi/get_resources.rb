@@ -117,7 +117,7 @@ class Sangokushi
       end
     end
 
-    if Time.now.min == 0
+    if [0, 1].include?(Time.now.min) && !(Time.now.hour > 2 && Time.now.hour < 10)
       begin
         self.fight_all_duels
       rescue => ex
