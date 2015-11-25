@@ -15,6 +15,7 @@ class Sangokushi
 
   def self.login
     driver.get "http://www.3gokushi.jp/"
+    sleep(3)
     # id = mail_address
     driver.find_element(:id, 'mail_address').send_keys('kubonagarei@gmail.com')
     # id = password
@@ -22,12 +23,15 @@ class Sangokushi
     # input type=image title ログイン
     driver.find_elements(:class, 'imgover').select{|e| e.attribute(:title) == "ログイン"}.first.click
 
+    sleep(3)
     ### ゲームスタート
     driver.find_element(:class, 'login_now').find_elements(:xpath, 'form/input[2]').first.click
 
+    sleep(3)
     ### サーバーの選択
     driver.find_element(:id, 'serverLatest').click
 
+    sleep(3)
     ### 地図画面 <http://w12.3gokushi.jp/village.php>
     ## ログインボーナスのポップアップが表示されると消す
     popup = driver.find_element(:id, 'login-bonus-close-bottom_img')
@@ -101,6 +105,7 @@ class Sangokushi
 
     [1, 3, 4].each do |i|  
       begin
+        sleep(3)
         self.switch_village(i)
         driver.get "http://w12.3gokushi.jp/village.php"
         sleep(3)
